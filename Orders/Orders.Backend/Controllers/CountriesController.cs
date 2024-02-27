@@ -87,6 +87,22 @@ namespace Orders.Backend.Controllers
                 jsonResponse.ResultModel = country;
                 return Ok(jsonResponse);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    jsonResponse.code = (int)HttpStatusCode.BadRequest;
+                    jsonResponse.ItsSuccessful = false;
+                    jsonResponse.Message = "Ya existe una pais con el mismo nombre.";
+                }
+                else
+                {
+                    jsonResponse.code = (int)HttpStatusCode.BadRequest;
+                    jsonResponse.ItsSuccessful = false;
+                    jsonResponse.Message = dbUpdateException.Message;
+                }
+                return Ok(jsonResponse);
+            }
             catch (Exception ex)
             {
                 jsonResponse.code = (int)HttpStatusCode.InternalServerError;
