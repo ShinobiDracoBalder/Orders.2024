@@ -23,7 +23,6 @@ namespace Orders.Frontend.Repositories
             {
                 return null;
             }
-
             var statusCode = HttpResponseMessage.StatusCode;
             if (statusCode == HttpStatusCode.NotFound)
             {
