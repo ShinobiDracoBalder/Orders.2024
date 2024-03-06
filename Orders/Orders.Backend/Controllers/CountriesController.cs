@@ -22,11 +22,23 @@ namespace Orders.Backend.Controllers
         public async Task<IActionResult> GetAsync()
         {
             JsonResponse jsonResponse = new JsonResponse();
+            List<Country> countryList = new List<Country>();
             try
             {
+
+                countryList = await _context.Countries.ToListAsync();
+
+                if (countryList.Count == 0)
+                {
+                    jsonResponse.code = (int)HttpStatusCode.NotFound;
+                    jsonResponse.ItsSuccessful = false;
+                    jsonResponse.ResultModel = countryList;
+                    return Ok(jsonResponse);
+                }
+
                 jsonResponse.code = (int)HttpStatusCode.OK;
                 jsonResponse.ItsSuccessful = true;
-                jsonResponse.ResultModel = await _context.Countries.ToListAsync();
+                jsonResponse.ResultModel = countryList;
                 return Ok(jsonResponse);
             }
             catch (Exception ex)
@@ -36,7 +48,7 @@ namespace Orders.Backend.Controllers
                 jsonResponse.Message = ex.Message;
                 return Ok(jsonResponse);
             }
-            
+
         }
 
         [HttpGet("{id}")]
@@ -58,7 +70,7 @@ namespace Orders.Backend.Controllers
                 jsonResponse.ResultModel = country;
                 return Ok(jsonResponse);
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 jsonResponse.code = (int)HttpStatusCode.InternalServerError;
                 jsonResponse.ItsSuccessful = false;
@@ -155,7 +167,7 @@ namespace Orders.Backend.Controllers
                 jsonResponse.Message = ex.Message;
                 return Ok(jsonResponse);
             }
-           
+
         }
     }
 }

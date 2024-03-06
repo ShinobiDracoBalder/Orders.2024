@@ -1,5 +1,31 @@
-﻿<h3>GenericList</h3>
+﻿@typeparam Titem
 
-@code {
-
+@if (MyList is null)
+{
+    @if (Loading is null)
+    {
+        <div class="d-flex justify-content-center align-items-center">
+            @* <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" /> *@
+            <img src="https://cdn.pixabay.com/animation/2023/10/08/03/19/03-19-26-213_512.gif" />
+        </div>
+    }
+    else
+    {
+        @Loading
+    }
+}
+else if (MyList.Count == 0)
+{
+    @if (NoRecords is null)
+    {
+        <p>No hay registros para mostrar...</p>
+    }
+    else
+    {
+        @NoRecords
+    }
+}
+else
+{
+    @Body
 }
